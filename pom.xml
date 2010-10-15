@@ -99,17 +99,6 @@
 
     <dependencies>
         <!-- eFaps kernel -->
-        <dependency>
-            <groupId>org.efaps</groupId>
-            <artifactId>efaps-kernel</artifactId>
-            <version>1.5.0</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>mysql-connector-java</artifactId>
-                    <groupId>mysql</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <!-- For Logging Purpose http://www.slf4j.org -->
         <dependency>

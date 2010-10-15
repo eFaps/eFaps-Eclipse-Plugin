@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 - 2009 The eFaps Team
+ * Copyright 2003 - 2010 The eFaps Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,9 @@
 
 package org.efaps.eclipse;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,25 +42,17 @@ import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.efaps.admin.runlevel.RunLevel;
-import org.efaps.db.Context;
-import org.efaps.init.StartupDatabaseConnection;
-import org.efaps.init.StartupException;
-import org.efaps.update.Install;
-import org.efaps.util.EFapsException;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle.
  *
- * @author tmo
- * @author jmox
+ * @author The eFaps Team
  * @version $Id$
  */
 public class EfapsPlugin
     extends AbstractUIPlugin
 {
-
     /**
      * Enum is used to define the colors for the different log levels.
      */
@@ -120,7 +110,7 @@ public class EfapsPlugin
     /**
      * Stores if this Plugin was initialized.
      */
-    private boolean initialized = false;
+    private final boolean initialized = false;
 
     /**
      * Bundle for this Plugin.
@@ -187,15 +177,14 @@ public class EfapsPlugin
     public boolean connect()
     {
         logInfo("connect.logInit");
-
-        final String type = getPluginPreferences().getString("dbtype");
+        final String type = EfapsPlugin.getDefault().getPreferenceStore().getString("dbtype");
         logInfo("connect.logDatabaseType", type);
 
-        final String factory = getPluginPreferences().getString("dbfactory");
+        final String factory = EfapsPlugin.getDefault().getPreferenceStore().getString("dbfactory");
         logInfo("connect.logFactory", factory);
 
         // prepare connection properties
-        final String propsStr = getPluginPreferences().getString("dbproperties");
+        final String propsStr = EfapsPlugin.getDefault().getPreferenceStore().getString("dbproperties");
 
         final Map<String, String> props = new HashMap<String, String>();
 
@@ -208,21 +197,6 @@ public class EfapsPlugin
                             ? group.substring(index + 1).trim()
                             : "";
             props.put(key, value);
-        }
-
-        try {
-            StartupDatabaseConnection.startup(type,
-                                        factory,
-                                        props,
-                                        "org.objectweb.jotm.Current",
-                                        600);
-            this.initialized = true;
-        } catch (final StartupException e) {
-            logError("connect.logException", e);
-        }
-
-        if (this.initialized) {
-            logInfo("connect.logInitialized");
         }
 
         return this.initialized;
@@ -244,32 +218,8 @@ public class EfapsPlugin
      */
     public boolean reloadCache()
     {
-        boolean reloaded = false;
-        logInfo("reloadCache.logStart");
+        final boolean reloaded = false;
 
-        boolean finished = false;
-        try {
-            if (startTransaction()) {
-                RunLevel.init("shell");
-                RunLevel.execute();
-                Context.commit();
-                logInfo("reloadCache.logEnded");
-                reloaded = true;
-            } else {
-                logError("reloadCache.logFailed");
-            }
-            finished = true;
-        } catch (final Exception e) {
-            logError("reloadCache.logException", e);
-        } finally {
-            if (!finished) {
-                try {
-                    Context.rollback();
-                } catch (final EFapsException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
         return reloaded;
     }
 
@@ -293,58 +243,9 @@ public class EfapsPlugin
     public boolean update(final String _file,
                           final Shell _shell)
     {
-        boolean updated = false;
+        final boolean updated = false;
 
-        final File file = new File(_file);
-        final String ending = _file.substring(_file.lastIndexOf(".") + 1);
 
-        final String type;
-
-        if ("java".equals(ending)) {
-            type = "source-java";
-        } else if ("js".equals(ending)) {
-            type = "source-js";
-        } else if ("css".equals(ending)) {
-            type = "source-css";
-        } else {
-            type = "install-xml";
-        }
-
-        final Install install = new Install();
-
-        logInfo("update.logStart", file.getName());
-
-        //
-        boolean read = false;
-        try {
-            install.addFile(file.toURL(), type);
-            read = true;
-        } catch (final MalformedURLException e) {
-            logError("update.logException", e);
-        }
-
-        if (read) {
-            boolean finished = false;
-            try {
-                if (startTransaction()) {
-                    install.updateLatest();
-                    Context.commit();
-                    logInfo("update.logEnd", file.getName());
-                    updated = true;
-                }
-                finished = true;
-            } catch (final Exception e) {
-                logError("update.logException", e);
-            } finally {
-                if (!finished) {
-                    try {
-                        Context.rollback();
-                    } catch (final EFapsException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
         return updated;
     }
 
@@ -358,21 +259,9 @@ public class EfapsPlugin
      * @throws EFapsException on error
      */
     protected boolean startTransaction()
-        throws EFapsException
     {
-        boolean started = false;
-        try {
-            final String user = getPluginPreferences().getString("name");
-            if ((user == null) || (user.length() == 0)) {
-                println(getClass(), LogLevel.ERROR, "startTransaction.logNoUser");
-            } else {
-                Context.begin(user);
-                started = true;
-            }
-        } catch (final Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        final boolean started = false;
+
         return started;
     }
 
@@ -465,7 +354,7 @@ public class EfapsPlugin
      * @param _key Key of the log
      * @param _arguments Arguments
      */
-    public void logInfo(final String _key,
+    private void logInfo(final String _key,
                         final Object... _arguments)
     {
         println(getClass(), LogLevel.INFO, _key, _arguments);
@@ -477,10 +366,25 @@ public class EfapsPlugin
      * @param _key Key of the log
      * @param _arguments Arguments
      */
-    public void logError(final String _key,
+    public void logInfo(final Class<?> _class,
+                        final String _key,
+                        final Object... _arguments)
+    {
+        println(_class, LogLevel.INFO, _key, _arguments);
+    }
+
+
+    /**
+     * Method to log a error to the console stream.
+     *
+     * @param _key Key of the log
+     * @param _arguments Arguments
+     */
+    public void logError(final Class<?> _class,
+                         final String _key,
                          final Object... _arguments)
     {
-        println(getClass(), LogLevel.ERROR, _key, _arguments);
+        println(_class, LogLevel.ERROR, _key, _arguments);
     }
 
     /**

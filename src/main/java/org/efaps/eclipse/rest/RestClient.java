@@ -18,13 +18,16 @@
  * Last Changed By: $Author$
  */
 
-
 package org.efaps.eclipse.rest;
+
+import java.io.File;
+import java.util.List;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.codec.binary.Base64;
+import org.efaps.eclipse.EfapsPlugin;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -34,7 +37,9 @@ import com.sun.jersey.client.apache.ApacheHttpClient;
 import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
-
+import com.sun.jersey.multipart.MultiPart;
+import com.sun.jersey.multipart.MultiPartMediaTypes;
+import com.sun.jersey.multipart.file.FileDataBodyPart;
 
 /**
  * TODO comment!
@@ -44,38 +49,77 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  */
 public class RestClient
 {
+
+    /**
+     * Client that makes the actual connection.
+     */
     private Client client;
+    /**
+     * Resource to be used in the request.
+     */
     private WebResource resource;
+
+    /**
+     * Url to be used in the request by this client.
+     */
     private final String url;
 
-    public RestClient(final String _url) {
+    /**
+     * @param _url url for this client.
+     */
+    public RestClient(final String _url)
+    {
         this.url = _url;
     }
 
+    /**
+     * Initialize the client.
+     */
     public void init()
     {
+        EfapsPlugin.getDefault().logInfo(getClass(), "init");
         final DefaultApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
         config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
-
         this.client = ApacheHttpClient.create(config);
-        // http://localhost:8888/eFaps/servlet/rest/update
-        // http://www.distribuidorafederal.com:8060/df/
-        //http://localhost:9999/df/servlet/rest
-        //http://192.168.1.31:8060/gyg/servlet/rest
         this.resource = this.client.resource(this.url);
         final Builder builder = this.resource.path("update").header(HttpHeaders.AUTHORIZATION, new String(Base64
                         .encodeBase64("Administrator:Administrator".getBytes())));
         final String re = builder.get(String.class);
-        System.out.println(re);
+        EfapsPlugin.getDefault().logInfo(getClass(), "init.response", re);
     }
 
-
+    /**
+     * Compile the target in the server.
+     *
+     * @param _target target to be compiled
+     */
     public void compile(final String _target)
     {
+        EfapsPlugin.getDefault().logInfo(getClass(), "compile", _target);
         final MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
         queryParams.add("type", _target);
-        final ClientResponse response = this.resource.path("compile").queryParams(queryParams).get(ClientResponse.class);
-        System.out.println(response);
+        final ClientResponse response = this.resource.path("compile").queryParams(queryParams)
+                        .get(ClientResponse.class);
+        EfapsPlugin.getDefault().logInfo(getClass(), "compile.response", response);
     }
 
+    /**
+     * @param _files files to be posted
+     * @throws Exception on error
+     */
+    public void post(final List<File> _files)
+        throws Exception
+    {
+        EfapsPlugin.getDefault().logInfo(getClass(), "post", _files);
+
+        final MultiPart multiPart = new MultiPart();
+        for (final File file : _files) {
+            final FileDataBodyPart part = new FileDataBodyPart("eFaps", file);
+            multiPart.bodyPart(part);
+        }
+        final ClientResponse response = this.resource.path("update").type(MultiPartMediaTypes.MULTIPART_MIXED_TYPE)
+                        .post(ClientResponse.class,
+                                        multiPart);
+        EfapsPlugin.getDefault().logInfo(getClass(), "post.response", response);
+    }
 }

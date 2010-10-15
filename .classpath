@@ -2,58 +2,22 @@
 <classpath>
 	<classpathentry kind="src" output="target/classes" path="src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="lib/activation-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/ant-1.7.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/ant-launcher-1.7.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-3.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/bcmail-jdk14-1.38.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/bcmail-jdk14-138.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/bcprov-jdk14-1.38.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/bcprov-jdk14-138.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/bctsp-jdk14-1.38.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-beanutils-1.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-collections-2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-digester-1.8.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-httpclient-3.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-io-1.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-jexl-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-transaction-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-vfs-1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/DynamicJasper-3.0.13.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/efaps-kernel-1.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-spec-jta-1.0-M1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/groovy-all-1.5.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/itext-2.1.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/ivy-2.1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jasperreports-3.7.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jaxb-api-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jaxb-impl-2.1.12.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jcl104-over-slf4j-1.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jcommon-1.0.15.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jdtcore-3.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jersey-apache-client-1.1.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jersey-client-1.1.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jersey-core-1.1.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jersey-multipart-1.1.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jersey-server-1.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jfreechart-1.0.12.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jline-0.9.94.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/joda-time-1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jsr311-api-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/junit-3.8.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jxl-2.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-over-slf4j-1.5.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mimepull-1.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/poi-3.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/postgresql-8.4-701.jdbc4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/quartz-1.8.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.5.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/stax-api-1.0-2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/wikiutil-0.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/xercesImpl-2.9.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/xml-apis-1.3.02.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/yuicompressor-2.3.6.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>

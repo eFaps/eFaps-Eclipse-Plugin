@@ -487,7 +487,7 @@
       <command
             defaultHandler="org.efaps.eclipse.handlers.CompileHandler"
             id="org.efaps.eclipse.command.compile"
-            name="%plugin.command.compile">
+            name="%plugin.command.restCompile">
          <defaultHandler
                class="org.efaps.eclipse.handlers.CompileHandler">
          </defaultHandler>
@@ -589,6 +589,27 @@
       <initializer
             class="org.efaps.eclipse.preferences.PreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="org.efaps.eclipse.contribution1"
+            objectClass="org.eclipse.core.resources.IFile">
+         <menu
+               id="org.efaps.eclipse.popup.menu"
+               label="%plugin.popup.menu"
+               path="additions">
+            <separator
+                  name="restgroup">
+            </separator>
+         </menu>
+         <action
+               class="org.efaps.eclipse.popup.actions.RestPostAction"
+               id="org.efaps.eclipse.popup.actions.restPost"
+               label="%plugin.popup.action.restPost"
+               menubarPath="org.efaps.eclipse.popup.menu/restgroup">
+                      </action>
+      </objectContribution>
    </extension>
 
 </plugin>
