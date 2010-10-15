@@ -6,7 +6,7 @@ package org.efaps.eclipse.preferences;
 public enum PreferenceConstants
 {
 
-    REST_SERVERLIST("org.efaps.eclipse.rest.list");
+    REST_URLLIST("org.efaps.eclipse.rest.list");
 
     private String prefName;
 

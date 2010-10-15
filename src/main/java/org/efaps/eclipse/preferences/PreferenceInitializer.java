@@ -17,7 +17,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
         final IPreferenceStore store = EfapsPlugin.getDefault().getPreferenceStore();
-        store.setDefault(PreferenceConstants.REST_SERVERLIST.getPrefName(), "");
+        store.setDefault(PreferenceConstants.REST_URLLIST.getPrefName(), "");
     }
 
 }

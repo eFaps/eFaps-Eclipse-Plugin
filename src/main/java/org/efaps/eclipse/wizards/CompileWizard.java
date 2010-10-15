@@ -14,10 +14,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
+import org.efaps.eclipse.rest.RestClient;
 
 public class CompileWizard extends Wizard implements IImportWizard {
 
-    RestWizardPage mainPage;
+    private RestWizardPage restPage;
+    private CompileWizardPage compilePage;
 
     public CompileWizard() {
         super();
@@ -29,6 +31,18 @@ public class CompileWizard extends Wizard implements IImportWizard {
     @Override
     public boolean performFinish() {
 
+        final String url = this.restPage.getComboUrl().getItem(this.restPage.getComboUrl().getSelectionIndex());
+        final RestClient client = new RestClient(url);
+        client.init();
+        if (this.compilePage.getCheckJasper().getSelection()) {
+            client.compile("jasper");
+        }
+        if (this.compilePage.getCheckJava().getSelection()) {
+            client.compile("java");
+        }
+        if (this.compilePage.getCheckCss().getSelection()) {
+            client.compile("css");
+        }
         return true;
     }
 
@@ -38,7 +52,8 @@ public class CompileWizard extends Wizard implements IImportWizard {
     public void init(final IWorkbench workbench, final IStructuredSelection selection) {
         setWindowTitle("File Import Wizard"); //NON-NLS-1
         setNeedsProgressMonitor(true);
-        this.mainPage = new RestWizardPage("Import File"); //NON-NLS-1
+        this.restPage = new RestWizardPage("Import File"); //NON-NLS-1
+        this.compilePage = new CompileWizardPage("Target");
     }
 
     /* (non-Javadoc)
@@ -47,7 +62,8 @@ public class CompileWizard extends Wizard implements IImportWizard {
     @Override
     public void addPages() {
         super.addPages();
-        addPage(this.mainPage);
+        addPage(this.restPage);
+        addPage(this.compilePage);
     }
 
 }

@@ -11,13 +11,21 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.efaps.eclipse.EfapsPlugin;
+import org.efaps.eclipse.preferences.PreferenceConstants;
 
 public class RestWizardPage
     extends WizardPage
 {
     private Text text1;
     private Composite container;
-    private Combo combo1;
+    private Combo comboUrl;
+
+    public Combo getComboUrl()
+    {
+        return this.comboUrl;
+    }
+
     /**
      * @param _pageName
      */
@@ -35,8 +43,23 @@ public class RestWizardPage
         final GridLayout layout = new GridLayout();
         this.container.setLayout(layout);
         layout.numColumns = 2;
+
         final Label label1 = new Label(this.container, SWT.NULL);
-        label1.setText("Put here a value");
+        label1.setText("URL");
+
+        this.comboUrl = new Combo(this.container, SWT.READ_ONLY);
+        this.comboUrl.setSize(200, 220);
+
+        final String[] urls = EfapsPlugin.getDefault().getPreferenceStore()
+                .getString(PreferenceConstants.REST_URLLIST.getPrefName()).split("\\|");
+
+        for (final String url : urls) {
+            this.comboUrl.add(url);
+        }
+        this.comboUrl.select(0);
+
+        final Label label2 = new Label(this.container, SWT.NULL);
+        label2.setText("Password");
 
         this.text1 = new Text(this.container, SWT.BORDER | SWT.SINGLE);
         this.text1.setText("");
@@ -56,9 +79,6 @@ public class RestWizardPage
         this.text1.setLayoutData(gd);
         // Required to avoid an error in the system
         setControl(this.container);
-        setPageComplete(false);
-        this.combo1 = new Combo(this.container, SWT.DROP_DOWN);
-        this.combo1.setSize(200, 220);
-        this.combo1.add("asdfasdfasdfasdfasdfasdfasdfasdfasdfasd");
+        setPageComplete(true);
     }
 }

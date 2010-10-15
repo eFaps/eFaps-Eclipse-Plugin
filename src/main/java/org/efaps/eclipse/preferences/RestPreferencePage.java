@@ -23,7 +23,7 @@ public class RestPreferencePage
     @Override
     public void createFieldEditors() {
 
-        addField(new ServerListEditor(PreferenceConstants.REST_SERVERLIST.getPrefName(), "Servers:",
+        addField(new ServerListEditor(PreferenceConstants.REST_URLLIST.getPrefName(), "Servers:",
                         getFieldEditorParent()));
     }
 
