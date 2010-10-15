@@ -485,6 +485,7 @@
          </defaultHandler>
       </command>
       <command
+            defaultHandler="org.efaps.eclipse.handlers.CompileHandler"
             id="org.efaps.eclipse.command.compile"
             name="%plugin.command.compile">
          <defaultHandler
