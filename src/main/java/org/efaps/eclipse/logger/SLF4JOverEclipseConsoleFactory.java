@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 - 2009 The eFaps Team
+ * Copyright 2003 - 2010 The eFaps Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,16 +26,17 @@ import org.slf4j.Logger;
 /**
  * Factory to create the logger for the efaps eclipse plugin.
  *
- * @author tmo
+ * @author The eFaps Team
  * @version $Id$
  */
-public class SLF4JOverEclipseConsoleFactory implements ILoggerFactory {
+public class SLF4JOverEclipseConsoleFactory
+    implements ILoggerFactory
+{
 
   /**
    * Instance of the logger.
    */
-  private final SLF4JOverEclipseConsole logInstance
-                                              = new SLF4JOverEclipseConsole();
+  private final SLF4JOverEclipseConsole logInstance = new SLF4JOverEclipseConsole();
 
   /**
    * Getter method for instance variable {@link #logInstance}.

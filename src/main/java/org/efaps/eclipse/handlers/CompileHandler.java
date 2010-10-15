@@ -38,12 +38,12 @@ import org.efaps.eclipse.wizards.CompileWizard;
 public class CompileHandler
     extends AbstractHandler
 {
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.
-     * ExecutionEvent)
+    /**
+     * Calls the REST compile Wizard.
+     *
+     * @param _event  execution event
+     * @throws ExecutionException on error
+     * @return null
      */
     public Object execute(final ExecutionEvent _event)
         throws ExecutionException

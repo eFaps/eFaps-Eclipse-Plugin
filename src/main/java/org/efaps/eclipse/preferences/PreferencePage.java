@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 - 2009 The eFaps Team
+ * Copyright 2003 - 2010 The eFaps Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,12 +35,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.efaps.eclipse.EfapsPlugin;
 
 /**
  * Class is used to render the Preference Page for the eFpas eclipse Plugin.
  *
- * @author tmo
+ * @author The eFaps Team
  * @version $Id$
  */
 public class PreferencePage

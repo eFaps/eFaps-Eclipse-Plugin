@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 - 2009 The eFaps Team
+ * Copyright 2003 - 2010 The eFaps Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.eclipse.ui.console.IConsoleFactory;
 /**
  * Console Factory used to show the console defined from the eFaps plugin.
  *
- * @author tmo
+ * @author The eFaps Team
  * @version $Id$
  */
 public class EfapsConsoleFactory implements IConsoleFactory {

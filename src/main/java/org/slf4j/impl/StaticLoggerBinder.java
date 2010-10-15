@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 - 2009 The eFaps Team
+ * Copyright 2003 - 2010 The eFaps Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,56 +20,56 @@
 
 package org.slf4j.impl;
 
-import org.slf4j.ILoggerFactory;
-import org.slf4j.spi.LoggerFactoryBinder;
-
 import org.efaps.eclipse.logger.SLF4JOverEclipseConsole;
 import org.efaps.eclipse.logger.SLF4JOverEclipseConsoleFactory;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.spi.LoggerFactoryBinder;
 
 /**
  * Class is used to bind the logger to the console.
  *
- * @author tmo
+ * @author The eFaps Team
  * @version $Id$
  */
-public class StaticLoggerBinder implements LoggerFactoryBinder {
+public class StaticLoggerBinder
+    implements LoggerFactoryBinder
+{
 
-  /**
-   * Binder.
-   */
-  public static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
+    /**
+     * Binder.
+     */
+    public static final StaticLoggerBinder SINGLETON = new StaticLoggerBinder();
 
-  /**
-   * Name of the Logger Factrot class.
-   */
-  private static final String LOGGERFACTORYCLASSSTR
-                                  = (SLF4JOverEclipseConsole.class).getName();
+    /**
+     * Name of the Logger Factrot class.
+     */
+    private static final String LOGGERFACTORYCLASSSTR = (SLF4JOverEclipseConsole.class).getName();
 
-  /**
-   * Logger Factory.
-   */
-  private final ILoggerFactory loggerFactory
-                                      = new SLF4JOverEclipseConsoleFactory();
+    /**
+     * Logger Factory.
+     */
+    private final ILoggerFactory loggerFactory = new SLF4JOverEclipseConsoleFactory();
 
-  /**
-   * Getter Method for instance variable {@link #loggerFactory}.
-   *
-   * @see org.slf4j.spi.LoggerFactoryBinder#getLoggerFactory()
-   * @return value of instance variable {@link #loggerFactory}.
-   *
-   */
-  public ILoggerFactory getLoggerFactory() {
-    return this.loggerFactory;
-  }
+    /**
+     * Getter Method for instance variable {@link #loggerFactory}.
+     *
+     * @see org.slf4j.spi.LoggerFactoryBinder#getLoggerFactory()
+     * @return value of instance variable {@link #loggerFactory}.
+     *
+     */
+    public ILoggerFactory getLoggerFactory()
+    {
+        return this.loggerFactory;
+    }
 
-  /**
-   * Getter Method for variable {@link #LOGGERFACTORYCLASSSTR}.
-   *
-   * @see org.slf4j.spi.LoggerFactoryBinder#getLoggerFactoryClassStr()
-   * @return value of variable {@link #LOGGERFACTORYCLASSSTR}.
-   */
-  public String getLoggerFactoryClassStr() {
-    return LOGGERFACTORYCLASSSTR;
-  }
-
+    /**
+     * Getter Method for variable {@link #LOGGERFACTORYCLASSSTR}.
+     *
+     * @see org.slf4j.spi.LoggerFactoryBinder#getLoggerFactoryClassStr()
+     * @return value of variable {@link #LOGGERFACTORYCLASSSTR}.
+     */
+    public String getLoggerFactoryClassStr()
+    {
+        return LOGGERFACTORYCLASSSTR;
+    }
 }

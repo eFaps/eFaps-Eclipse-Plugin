@@ -1,13 +1,23 @@
-/*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+/*
+ * Copyright 2003 - 2010 The eFaps Team
  *
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Revision:        $Rev$
+ * Last Changed:    $Date$
+ * Last Changed By: $Author$
+ */
+
 package org.efaps.eclipse.wizards;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -16,20 +26,32 @@ import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 import org.efaps.eclipse.rest.RestClient;
 
-public class CompileWizard extends Wizard implements IImportWizard {
+/**
+ * TODO comment!
+ *
+ * @author The eFaps Team
+ * @version $Id$
+ */
+public class CompileWizard
+    extends Wizard
+    implements IImportWizard
+{
 
     private RestWizardPage restPage;
     private CompileWizardPage compilePage;
 
-    public CompileWizard() {
+    public CompileWizard()
+    {
         super();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#performFinish()
      */
     @Override
-    public boolean performFinish() {
+    public boolean performFinish()
+    {
 
         final String url = this.restPage.getComboUrl().getItem(this.restPage.getComboUrl().getSelectionIndex());
         final RestClient client = new RestClient(url);
@@ -46,21 +68,27 @@ public class CompileWizard extends Wizard implements IImportWizard {
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
+     * org.eclipse.jface.viewers.IStructuredSelection)
      */
-    public void init(final IWorkbench workbench, final IStructuredSelection selection) {
-        setWindowTitle("File Import Wizard"); //NON-NLS-1
+    public void init(final IWorkbench workbench,
+                     final IStructuredSelection selection)
+    {
+        setWindowTitle("File Import Wizard"); // NON-NLS-1
         setNeedsProgressMonitor(true);
-        this.restPage = new RestWizardPage("Import File"); //NON-NLS-1
+        this.restPage = new RestWizardPage("Import File"); // NON-NLS-1
         this.compilePage = new CompileWizardPage("Target");
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see org.eclipse.jface.wizard.IWizard#addPages()
      */
     @Override
-    public void addPages() {
+    public void addPages()
+    {
         super.addPages();
         addPage(this.restPage);
         addPage(this.compilePage);
