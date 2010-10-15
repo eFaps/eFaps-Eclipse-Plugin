@@ -18,7 +18,7 @@
  * Last Changed By: $Author$
  */
 
-package org.efaps.eclipse;
+package org.efaps.eclipse.preferences;
 
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.efaps.eclipse.EfapsPlugin;
 
 /**
  * Class is used to render the Preference Page for the eFpas eclipse Plugin.
@@ -102,6 +103,9 @@ public class PreferencePage
 
         // MyEditor test = new MyEditor(getFieldEditorParent());
         // addField(test);
+
+
+
     }
 
     /**

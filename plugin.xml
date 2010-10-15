@@ -450,9 +450,15 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.efaps.eclipse.PreferencePage"
-            id="EclipsePlugin.page1"
+            class="org.efaps.eclipse.preferences.PreferencePage"
+            id="org.efaps.eclipse.preferences.eFapsSettings"
             name="eFaps Settings">
+      </page>
+      <page
+            category="org.efaps.eclipse.preferences.eFapsSettings"
+            class="org.efaps.eclipse.preferences.RestPreferencePage"
+            id="org.efaps.eclipse.preferences.RestSettings"
+            name="Rest">
       </page>
    </extension>
    <extension
@@ -523,7 +529,7 @@
                   style="push">
             </command>
             <separator
-                  name="eFaps-eclipse-plugin.separator1">
+                  name="eFaps-eclipse-plugin.separator2">
             </separator>
             <command
                   commandId="org.efaps.eclipse.command.compile"
@@ -576,6 +582,12 @@
             Import a file from the local file system into the workspace.
          </description>
       </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.efaps.eclipse.preferences.PreferenceInitializer">
+      </initializer>
    </extension>
 
 </plugin>
