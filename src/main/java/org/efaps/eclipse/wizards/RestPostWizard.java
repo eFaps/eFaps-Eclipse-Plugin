@@ -25,12 +25,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
+import org.efaps.eclipse.EfapsPlugin;
 import org.efaps.eclipse.rest.RestClient;
 
 
@@ -64,25 +66,30 @@ public class RestPostWizard
         final String url = this.restPage.getComboUrl().getItem(this.restPage.getComboUrl().getSelectionIndex());
         final List<File> files = new ArrayList<File>();
         final Iterator<?> iter = this.selection.iterator();
-        while (iter.hasNext()) {
-            final IAdaptable adapt = (IAdaptable) iter.next();
-            final IFile file = (IFile) adapt.getAdapter(IFile.class);
-            if (file != null && file.isAccessible()) {
-                final URI uri = file.getLocationURI();
-                final File t = new File(uri);
-                files.add(t);
-            }
-
-        }
-        final RestClient client = new RestClient(url);
-        client.init();
         try {
-            client.post(files);
+            while (iter.hasNext()) {
+                final IAdaptable adapt = (IAdaptable) iter.next();
+                final IResource file;
+                if (adapt instanceof IJavaElement) {
+                    final IJavaElement comp = (IJavaElement) adapt.getAdapter(IJavaElement.class);
+                    file = comp.getCorrespondingResource();
+                } else {
+                    file = (IResource) adapt.getAdapter(IResource.class);
+                }
+                if (file != null && file.isAccessible()) {
+                    final URI uri = file.getLocationURI();
+                    final File t = new File(uri);
+                    files.add(t);
+                }
+            }
+            if (!files.isEmpty()) {
+                final RestClient client = new RestClient(url);
+                client.init();
+                client.post(files);
+            }
         } catch (final Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            EfapsPlugin.getDefault().logError(getClass(), "Exception", e);
         }
-
         return true;
     }
 

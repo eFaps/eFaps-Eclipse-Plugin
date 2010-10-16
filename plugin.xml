@@ -593,8 +593,8 @@
    <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
-            id="org.efaps.eclipse.contribution1"
-            objectClass="org.eclipse.core.resources.IFile">
+            id="org.efaps.eclipse.contribution.javaelement"
+            objectClass="org.eclipse.jdt.core.IJavaElement">
          <menu
                id="org.efaps.eclipse.popup.menu"
                label="%plugin.popup.menu"
@@ -609,6 +609,25 @@
                label="%plugin.popup.action.restPost"
                menubarPath="org.efaps.eclipse.popup.menu/restgroup">
                       </action>
+      </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="org.efaps.eclipse.contribution.file"
+            objectClass="org.eclipse.core.resources.IFile">
+         <menu
+               id="org.efaps.eclipse.popup.menu"
+               label="%plugin.popup.menu"
+               path="additions">
+            <separator
+                  name="restgroup">
+            </separator>
+         </menu>
+         <action
+               class="org.efaps.eclipse.popup.actions.RestPostAction"
+               id="org.efaps.eclipse.popup.actions.restPost"
+               label="%plugin.popup.action.restPost"
+               menubarPath="org.efaps.eclipse.popup.menu/restgroup">
+         </action>
       </objectContribution>
    </extension>
 
