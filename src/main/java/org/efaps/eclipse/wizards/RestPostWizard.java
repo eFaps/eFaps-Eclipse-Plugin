@@ -101,7 +101,7 @@ public class RestPostWizard
     public void init(final IWorkbench _workbench,
                      final IStructuredSelection _selection)
     {
-        setWindowTitle("File Import Wizard");
+        setWindowTitle("Rest Post Wizard");
         setNeedsProgressMonitor(true);
         this.restPage = new RestWizardPage("Import File");
         this.selection = _selection;

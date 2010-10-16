@@ -76,7 +76,7 @@ public class CompileWizard
     public void init(final IWorkbench workbench,
                      final IStructuredSelection selection)
     {
-        setWindowTitle("File Import Wizard"); // NON-NLS-1
+        setWindowTitle("Compile Wizard"); // NON-NLS-1
         setNeedsProgressMonitor(true);
         this.restPage = new RestWizardPage("Import File"); // NON-NLS-1
         this.compilePage = new CompileWizardPage("Target");
