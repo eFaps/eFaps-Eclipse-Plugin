@@ -27,7 +27,8 @@ package org.efaps.eclipse.preferences;
  */
 public enum PreferenceConstants
 {
-
+    REST_PWD("org.efaps.eclipse.rest.password"),
+    REST_USER("org.efaps.eclipse.rest.user"),
     REST_URLLIST("org.efaps.eclipse.rest.list");
 
     private String prefName;
