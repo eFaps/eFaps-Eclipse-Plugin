@@ -28,6 +28,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.codec.binary.Base64;
 import org.efaps.eclipse.EfapsPlugin;
+import org.efaps.eclipse.preferences.PreferenceConstants;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -78,12 +79,17 @@ public class RestClient
     public void init()
     {
         EfapsPlugin.getDefault().logInfo(getClass(), "init");
+        final String pwd = EfapsPlugin.getDefault().getPreferenceStore()
+                        .getString(PreferenceConstants.REST_PWD.getPrefName());
+        final String user = EfapsPlugin.getDefault().getPreferenceStore()
+                        .getString(PreferenceConstants.REST_USER.getPrefName());
+
         final DefaultApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
         config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
         this.client = ApacheHttpClient.create(config);
         this.resource = this.client.resource(this.url);
         final Builder builder = this.resource.path("update").header(HttpHeaders.AUTHORIZATION, new String(Base64
-                        .encodeBase64("Administrator:Administrator".getBytes())));
+                        .encodeBase64((user + ":" + pwd).getBytes())));
         final String re = builder.get(String.class);
         EfapsPlugin.getDefault().logInfo(getClass(), "init.response", re);
     }
