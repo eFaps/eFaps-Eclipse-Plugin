@@ -40,6 +40,8 @@ public class CompileWizardPage
 
     private Button checkJava;
     private Button checkCss;
+    private Button checkJavaScript;
+    private Button checkWiki;
 
     /**
      * @param _pageName
@@ -48,6 +50,7 @@ public class CompileWizardPage
     {
         super(_pageName);
     }
+
 
     /* (non-Javadoc)
      * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
@@ -75,12 +78,26 @@ public class CompileWizardPage
         this.checkCss = new Button(this.container, SWT.CHECK);
         this.checkCss.setSelection(true);
 
+        final Label label4 = new Label(this.container, SWT.NULL);
+        label4.setText("JavaScript");
+        this.checkJavaScript = new Button(this.container, SWT.CHECK);
+        this.checkJavaScript.setSelection(true);
+
+        final Label label5 = new Label(this.container, SWT.NULL);
+        label5.setText("Wiki");
+        this.checkWiki = new Button(this.container, SWT.CHECK);
+        this.checkWiki.setSelection(true);
 
         // Required to avoid an error in the system
         setControl(this.container);
         setPageComplete(true);
     }
 
+
+    public Button getCheckWiki()
+    {
+        return this.checkWiki;
+    }
 
 
     public Button getCheckCss()
@@ -97,5 +114,11 @@ public class CompileWizardPage
     public Button getCheckJava()
     {
         return this.checkJava;
+    }
+
+
+    public Button getCheckJavaScript()
+    {
+        return this.checkJavaScript;
     }
 }
