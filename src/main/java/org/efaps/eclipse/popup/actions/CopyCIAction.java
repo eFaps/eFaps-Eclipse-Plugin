@@ -1,5 +1,5 @@
 /*
- * Copyright 2003 - 2010 The eFaps Team
+ * Copyright 2003 - 2011 The eFaps Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  * Last Changed:    $Date: 2009-01-13 12:16:14 -0500 (Tue, 13 Jan 2009) $
  * Last Changed By: $Author: jmox $
  */
+
 package org.efaps.eclipse.popup.actions;
 
 import org.eclipse.jface.action.IAction;
@@ -24,20 +25,15 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
-import org.efaps.eclipse.wizards.RestPostWizard;
+import org.efaps.eclipse.wizards.CopyCIWizard;
 
-/**
- * @author The eFaps Team
- * @version $Id: SLF4JOverEclipseConsole.java 2072 2009-01-13 17:16:14Z jmox $
- */
-public class RestPostAction
+
+public class CopyCIAction
     implements IObjectActionDelegate
 {
-
     /**
      * Shell used by this Action.
      */
@@ -51,36 +47,28 @@ public class RestPostAction
     /**
      * Constructor for Action.
      */
-    public RestPostAction()
+    public CopyCIAction()
     {
         super();
     }
 
-    /**
-     * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
-     */
-    public void setActivePart(final IAction _action,
-                              final IWorkbenchPart _targetPart)
-    {
-        this.shell = _targetPart.getSite().getShell();
-    }
-
-    /**
-     * @see IActionDelegate#run(IAction)
-     */
     public void run(final IAction _action)
     {
-        final RestPostWizard wiz = new RestPostWizard();
-        wiz.init( PlatformUI.getWorkbench(), this.selection);
+        final CopyCIWizard wiz = new CopyCIWizard();
+        wiz.init(PlatformUI.getWorkbench(), this.selection);
         new WizardDialog(this.shell, wiz).open();
+
     }
 
-    /**
-     * @see IActionDelegate#selectionChanged(IAction, ISelection)
-     */
     public void selectionChanged(final IAction _action,
                                  final ISelection _selection)
     {
         this.selection = (TreeSelection) _selection;
+    }
+
+    public void setActivePart(final IAction _action,
+                              final IWorkbenchPart _targetPart)
+    {
+        this.shell = _targetPart.getSite().getShell();
     }
 }
