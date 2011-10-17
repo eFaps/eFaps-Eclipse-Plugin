@@ -31,27 +31,38 @@ public class CopyCIWizard
     implements IImportWizard
 {
 
-    private CopyCIWizardPage copyCIPage;
-
+    private IStructuredSelection selection;
 
     @Override
     public boolean performFinish()
     {
-        final IFile file = this.copyCIPage.createNewFile();
-        return file != null;
+        boolean ret = false;
+        final CopyCIWizardPage page = (CopyCIWizardPage) getPage("CopyCIWizardPage");
+        final FileNameWizardPage fileNamepage = (FileNameWizardPage) getPage("FileNameWizardPage");
+        final String filenames = fileNamepage.getFileNames();
+        if (filenames != null && !filenames.isEmpty()) {
+            page.createNewFiles(filenames);
+            ret = true;
+        }else {
+            final IFile file = page.createNewFile();
+            page.setFileName("test");
+            ret = file != null;
+        }
+        return ret;
     }
 
     public void init(final IWorkbench _workbench,
                      final IStructuredSelection _selection)
     {
         setWindowTitle("Copy Configuration Item Wizard");
-        this.copyCIPage = new CopyCIWizardPage("Import File", _selection);
+        this.selection = _selection;
     }
 
     @Override
     public void addPages()
     {
         super.addPages();
-        addPage(this.copyCIPage);
+        addPage(new CopyCIWizardPage("CopyCIWizardPage", this.selection));
+        addPage(new FileNameWizardPage("FileNameWizardPage"));
     }
 }

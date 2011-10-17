@@ -18,7 +18,6 @@
  * Last Changed By: $Author: jan.moxter $
  */
 
-
 package org.efaps.eclipse.wizards;
 
 import java.io.File;
@@ -27,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.UUID;
@@ -43,22 +43,39 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.IOUtils;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.eclipse.ui.ide.undo.CreateFileOperation;
+import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
+import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
+import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.efaps.eclipse.EfapsPlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-
 public class CopyCIWizardPage
     extends WizardNewFileCreationPage
 {
 
     private IResource fileResource;
+    private String fileName;
 
     protected CopyCIWizardPage(final String _pageName,
                                final IStructuredSelection _selection)
@@ -68,12 +85,26 @@ public class CopyCIWizardPage
         final Iterator<?> iter = _selection.iterator();
         if (iter.hasNext()) {
             final IAdaptable adapt = (IAdaptable) iter.next();
-             this.fileResource = (IResource) adapt.getAdapter(IResource.class);
+            this.fileResource = (IResource) adapt.getAdapter(IResource.class);
+            setFileName(this.fileResource.getName());
         }
     }
 
     @Override
-    protected InputStream getInitialContents() {
+    protected void createAdvancedControls(final Composite parent)
+    {
+
+    }
+
+    @Override
+    protected IStatus validateLinkedResource()
+    {
+        return Status.OK_STATUS;
+    }
+
+    @Override
+    protected InputStream getInitialContents()
+    {
         InputStream ret = null;
         if (this.fileResource != null && this.fileResource.isAccessible()) {
             final URI uri = this.fileResource.getLocationURI();
@@ -84,7 +115,7 @@ public class CopyCIWizardPage
                 final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 final DocumentBuilder docBuilder = factory.newDocumentBuilder();
                 final Document doc = docBuilder.parse(file);
-                //create the root element
+                // create the root element
                 final Element root = doc.getDocumentElement();
                 final NodeList children = root.getChildNodes();
                 boolean def = false;
@@ -135,6 +166,84 @@ public class CopyCIWizardPage
             } catch (final TransformerException e) {
                 EfapsPlugin.getDefault().logError(getClass(), "TransformerException", e);
             }
+        }
+        return ret;
+    }
+
+    public void createNewFiles(final String _fileNames)
+    {
+        final String[] filenames = _fileNames.split("\n");
+        for (final String fileNameTmp : filenames) {
+            if (fileNameTmp != null && !fileNameTmp.isEmpty()) {
+                this.fileName = fileNameTmp.trim();
+                final IPath containerPath = getContainerFullPath();
+                final IPath newFilePath = containerPath.append(fileNameTmp.trim() + ".xml");
+                final IFile newFileHandle = createFileHandle(newFilePath);
+                final InputStream initialContents = getInitialContents();
+                final IRunnableWithProgress op = new IRunnableWithProgress()
+                {
+
+                    public void run(final IProgressMonitor monitor)
+                    {
+                        final CreateFileOperation op = new CreateFileOperation(newFileHandle,
+                                        null, initialContents,
+                                        IDEWorkbenchMessages.WizardNewFileCreationPage_title);
+                        try {
+                            // see bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=219901
+                            // directly execute the operation so that the undo state is
+                            // not preserved. Making this undoable resulted in too many
+                            // accidental file deletions.
+                            op.execute(monitor, WorkspaceUndoUtil.getUIInfoAdapter(getShell()));
+                        } catch (final ExecutionException e) {
+                            getContainer().getShell().getDisplay().syncExec(
+                                            new Runnable()
+                                            {
+
+                                                public void run()
+                                                {
+                                                    if (e.getCause() instanceof CoreException) {
+                                                        ErrorDialog.openError(getContainer().getShell(),
+                                                            IDEWorkbenchMessages.WizardNewFileCreationPage_errorTitle,
+                                                                        null,
+                                                                        ((CoreException) e.getCause()).getStatus());
+                                                    } else {
+                                                        IDEWorkbenchPlugin.log(getClass(),
+                                                                               "createNewFile()", e.getCause()); //$NON-NLS-1$
+                                                        MessageDialog.openError(getContainer().getShell(),
+                                                    IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorTitle,
+                                           NLS.bind(IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorMessage,
+                                           e.getCause().getMessage()));
+                                                    }
+                                                }
+                                            });
+                        }
+                    }
+                };
+                try {
+                    getContainer().run(true, true, op);
+                } catch (final InterruptedException e) {
+
+                } catch (final InvocationTargetException e) {
+                    IDEWorkbenchPlugin.log(getClass(), "createNewFile()", e.getTargetException()); //$NON-NLS-1$
+                    MessageDialog.open(MessageDialog.ERROR,getContainer().getShell(),
+                                        IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorTitle,
+                                        NLS.bind(IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorMessage,
+                                        e.getTargetException().getMessage()), SWT.SHEET);
+
+                }
+            }
+        }
+        this.fileName = null;
+    }
+
+    @Override
+    public String getFileName()
+    {
+        final String ret;
+        if (this.fileName != null) {
+            ret = this.fileName;
+        } else {
+            ret = super.getFileName();
         }
         return ret;
     }
