@@ -93,13 +93,18 @@ public class CopyCIWizardPage
     @Override
     protected void createAdvancedControls(final Composite parent)
     {
-
+     // overwritten to deactivate the original functionality
     }
 
     @Override
     protected IStatus validateLinkedResource()
     {
         return Status.OK_STATUS;
+    }
+
+    @Override
+    protected void createLinkTarget() {
+        // overwritten to deactivate the original functionality
     }
 
     @Override
