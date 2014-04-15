@@ -91,7 +91,7 @@ public class SLF4JOverEclipseConsole
     public void debug(final String _messagePattern,
                       final Object _arg)
     {
-        debug(format(_messagePattern, _arg));
+        debug(format(_messagePattern, _arg).getMessage());
     }
 
     /**
@@ -102,9 +102,9 @@ public class SLF4JOverEclipseConsole
      *
      */
     public void debug(final String _messagePattern,
-                      final Object[] _args)
+                      final Object... _args)
     {
-        debug(arrayFormat(_messagePattern, _args));
+        debug(arrayFormat(_messagePattern, _args).getMessage());
     }
 
     /**
@@ -147,7 +147,7 @@ public class SLF4JOverEclipseConsole
                       final Object _arg1,
                       final Object _arg2)
     {
-        debug(format(_messagePattern, _arg1, _arg2));
+        debug(format(_messagePattern, _arg1, _arg2).getMessage());
     }
 
     /**
@@ -162,7 +162,7 @@ public class SLF4JOverEclipseConsole
                       final String _messagePattern,
                       final Object _arg)
     {
-        debug(format(_messagePattern, _arg));
+        debug(format(_messagePattern, _arg).getMessage());
     }
 
     /**
@@ -175,9 +175,9 @@ public class SLF4JOverEclipseConsole
      */
     public void debug(final Marker _marker,
                       final String _messagePattern,
-                      final Object[] _args)
+                      final Object... _args)
     {
-        debug(arrayFormat(_messagePattern, _args));
+        debug(arrayFormat(_messagePattern, _args).getMessage());
     }
 
     /**
@@ -208,7 +208,7 @@ public class SLF4JOverEclipseConsole
                       final Object _arg1,
                       final Object _arg2)
     {
-        debug(format(_messagePattern, _arg1, _arg2));
+        debug(format(_messagePattern, _arg1, _arg2).getMessage());
     }
 
     // ///////////////////////////////////////////////////////////////////////////
@@ -256,7 +256,7 @@ public class SLF4JOverEclipseConsole
     public void error(final String _messagePattern,
                       final Object _arg)
     {
-        error(format(_messagePattern, _arg));
+        error(format(_messagePattern, _arg).getMessage());
     }
 
     /**
@@ -267,9 +267,9 @@ public class SLF4JOverEclipseConsole
      *
      */
     public void error(final String _messagePattern,
-                      final Object[] _args)
+                      final Object... _args)
     {
-        error(arrayFormat(_messagePattern, _args));
+        error(arrayFormat(_messagePattern, _args).getMessage());
     }
 
     /**
@@ -312,7 +312,7 @@ public class SLF4JOverEclipseConsole
                       final Object _arg1,
                       final Object _arg2)
     {
-        error(format(_messagePattern, _arg1, _arg2));
+        error(format(_messagePattern, _arg1, _arg2).getMessage());
     }
 
     /**
@@ -327,7 +327,7 @@ public class SLF4JOverEclipseConsole
                       final String _messagePattern,
                       final Object _arg)
     {
-        error(format(_messagePattern, _arg));
+        error(format(_messagePattern, _arg).getMessage());
     }
 
     /**
@@ -340,9 +340,9 @@ public class SLF4JOverEclipseConsole
      */
     public void error(final Marker _marker,
                       final String _messagePattern,
-                      final Object[] _args)
+                      final Object... _args)
     {
-        error(arrayFormat(_messagePattern, _args));
+        error(arrayFormat(_messagePattern, _args).getMessage());
     }
 
     /**
@@ -373,7 +373,7 @@ public class SLF4JOverEclipseConsole
                       final Object _arg1,
                       final Object _arg2)
     {
-        error(format(_messagePattern, _arg1, _arg2));
+        error(format(_messagePattern, _arg1, _arg2).getMessage());
     }
 
     // ///////////////////////////////////////////////////////////////////////////
@@ -421,7 +421,7 @@ public class SLF4JOverEclipseConsole
     public void info(final String _messagePattern,
                      final Object _arg)
     {
-        info(format(_messagePattern, _arg));
+        info(format(_messagePattern, _arg).getMessage());
     }
 
     /**
@@ -432,9 +432,9 @@ public class SLF4JOverEclipseConsole
      *
      */
     public void info(final String _messagePattern,
-                     final Object[] _args)
+                     final Object... _args)
     {
-        info(arrayFormat(_messagePattern, _args));
+        info(arrayFormat(_messagePattern, _args).getMessage());
     }
 
     /**
@@ -477,7 +477,7 @@ public class SLF4JOverEclipseConsole
                      final Object _arg1,
                      final Object _arg2)
     {
-        info(format(_messagePattern, _arg1, _arg2));
+        info(format(_messagePattern, _arg1, _arg2).getMessage());
     }
 
     /**
@@ -492,7 +492,7 @@ public class SLF4JOverEclipseConsole
                      final String _messagePattern,
                      final Object _arg)
     {
-        info(format(_messagePattern, _arg));
+        info(format(_messagePattern, _arg).getMessage());
     }
 
     /**
@@ -505,9 +505,9 @@ public class SLF4JOverEclipseConsole
      */
     public void info(final Marker _marker,
                      final String _messagePattern,
-                     final Object[] _args)
+                     final Object... _args)
     {
-        info(arrayFormat(_messagePattern, _args));
+        info(arrayFormat(_messagePattern, _args).getMessage());
     }
 
     /**
@@ -538,7 +538,7 @@ public class SLF4JOverEclipseConsole
                      final Object _arg1,
                      final Object _arg2)
     {
-        info(format(_messagePattern, _arg1, _arg2));
+        info(format(_messagePattern, _arg1, _arg2).getMessage());
     }
 
     // ///////////////////////////////////////////////////////////////////////////
@@ -586,7 +586,7 @@ public class SLF4JOverEclipseConsole
     public void trace(final String _messagePattern,
                       final Object _arg)
     {
-        trace(format(_messagePattern, _arg));
+        trace(format(_messagePattern, _arg).getMessage());
     }
 
     /**
@@ -597,9 +597,9 @@ public class SLF4JOverEclipseConsole
      *
      */
     public void trace(final String _messagePattern,
-                      final Object[] _args)
+                      final Object... _args)
     {
-        trace(arrayFormat(_messagePattern, _args));
+        trace(arrayFormat(_messagePattern, _args).getMessage());
     }
 
     /**
@@ -642,7 +642,7 @@ public class SLF4JOverEclipseConsole
                       final Object _arg1,
                       final Object _arg2)
     {
-        trace(format(_messagePattern, _arg1, _arg2));
+        trace(format(_messagePattern, _arg1, _arg2).getMessage());
     }
 
     /**
@@ -657,7 +657,7 @@ public class SLF4JOverEclipseConsole
                       final String _messagePattern,
                       final Object _arg)
     {
-        trace(format(_messagePattern, _arg));
+        trace(format(_messagePattern, _arg).getMessage());
     }
 
     /**
@@ -670,9 +670,9 @@ public class SLF4JOverEclipseConsole
      */
     public void trace(final Marker _marker,
                       final String _messagePattern,
-                      final Object[] _args)
+                      final Object... _args)
     {
-        trace(arrayFormat(_messagePattern, _args));
+        trace(arrayFormat(_messagePattern, _args).getMessage());
     }
 
     /**
@@ -704,7 +704,7 @@ public class SLF4JOverEclipseConsole
                       final Object _arg1,
                       final Object _arg2)
     {
-        trace(format(_messagePattern, _arg1, _arg2));
+        trace(format(_messagePattern, _arg1, _arg2).getMessage());
     }
 
     /**
@@ -752,7 +752,7 @@ public class SLF4JOverEclipseConsole
     public void warn(final String _messagePattern,
                      final Object _arg)
     {
-        warn(format(_messagePattern, _arg));
+        warn(format(_messagePattern, _arg).getMessage());
     }
 
     /**
@@ -763,9 +763,9 @@ public class SLF4JOverEclipseConsole
      *
      */
     public void warn(final String _messagePattern,
-                     final Object[] _args)
+                     final Object... _args)
     {
-        warn(arrayFormat(_messagePattern, _args));
+        warn(arrayFormat(_messagePattern, _args).getMessage());
     }
 
     /**
@@ -808,7 +808,7 @@ public class SLF4JOverEclipseConsole
                      final Object _arg1,
                      final Object _arg2)
     {
-        warn(format(_messagePattern, _arg1, _arg2));
+        warn(format(_messagePattern, _arg1, _arg2).getMessage());
     }
 
     /**
@@ -823,7 +823,7 @@ public class SLF4JOverEclipseConsole
                      final String _messagePattern,
                      final Object _arg)
     {
-        warn(format(_messagePattern, _arg));
+        warn(format(_messagePattern, _arg).getMessage());
     }
 
     /**
@@ -836,9 +836,9 @@ public class SLF4JOverEclipseConsole
      */
     public void warn(final Marker _marker,
                      final String _messagePattern,
-                     final Object[] _args)
+                     final Object... _args)
     {
-        warn(arrayFormat(_messagePattern, _args));
+        warn(arrayFormat(_messagePattern, _args).getMessage());
     }
 
     /**
@@ -869,6 +869,6 @@ public class SLF4JOverEclipseConsole
                      final Object _arg1,
                      final Object _arg2)
     {
-        warn(format(_messagePattern, _arg1, _arg2));
+        warn(format(_messagePattern, _arg1, _arg2).getMessage());
     }
 }

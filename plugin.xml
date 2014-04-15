@@ -99,14 +99,14 @@
       <content-type
             base-type="org.eclipse.core.runtime.xml"
             file-extensions="xml"
-            id="org.efaps.eclipse.contenttypes.common.systemattribute"
-            name="eFaps Common System Attribute Content"
+            id="org.efaps.eclipse.contenttypes.common.systemconfiguration"
+            name="eFaps Common Systemconfiguration Content"
             priority="high">
          <describer
                class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
             <parameter
                   name="element"
-                  value="common-systemattribute">
+                  value="common-systemconfiguration">
             </parameter>
          </describer>
       </content-type>
@@ -128,6 +128,20 @@
        <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
          <parameter name="element" value="datamodel-sqltable"/>
        </describer>
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            id="org.efaps.eclipse.contenttypes.datamodel.dimension"
+            name="eFaps Data Model Dimension Content"
+            priority="high">
+         <describer
+               class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="datamodel-dimension">
+            </parameter>
+         </describer>
       </content-type>
       <content-type
             base-type="org.eclipse.core.runtime.xml"
@@ -269,8 +283,8 @@
       <decorator
             adaptable="true"
             icon="icons/common_systemconfiguration/Admin_Common_SystemConfigurationImage.gif"
-            id="org.efaps.eclipse.decorators.common.systemattribute"
-            label="eFaps Common System Attribute Decorator"
+            id="org.efaps.eclipse.decorators.common.systemconfiguration"
+            label="eFaps Common SystemConfiguration Decorator"
             lightweight="true"
             location="TOP_LEFT"
             state="true">
@@ -281,7 +295,7 @@
                </objectClass>
                <objectState
                      name="contentTypeId"
-                     value="org.efaps.eclipse.contenttypes.common.systemattribute">
+                     value="org.efaps.eclipse.contenttypes.common.systemconfiguration">
                </objectState>
             </and>
          </enablement>
@@ -328,11 +342,31 @@
       </decorator>
       <decorator
             adaptable="true"
+            icon="icons/datamodel/Admin_DataModel_DimensionImage.gif"
+            id="org.efaps.eclipse.decorators.datamodel.dimension"
+            label="eFaps Data Model Dimension Decorator"
+            lightweight="true"
+            location="TOP_LEFT"
+            state="true">
+         <enablement>
+            <and>
+               <objectClass
+                     name="org.eclipse.core.resources.IFile">
+               </objectClass>
+               <objectState
+                     name="contentTypeId"
+                     value="org.efaps.eclipse.contenttypes.datamodel.dimension">
+               </objectState>
+            </and>
+         </enablement>
+      </decorator>
+      <decorator
+            adaptable="true"
             icon="icons/userinterface/Admin_UI_CommandImage.gif"
             id="org.efaps.eclipse.decorators.command"
             label="eFaps User Interface Command Decorator"
             lightweight="true"
-            location="UNDERLAY"
+            location="TOP_LEFT"
             state="true">
          <enablement>
             <and>
@@ -450,40 +484,13 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.efaps.eclipse.preferences.PreferencePage"
-            id="org.efaps.eclipse.preferences.eFapsSettings"
-            name="eFaps Settings">
-      </page>
-      <page
-            category="org.efaps.eclipse.preferences.eFapsSettings"
             class="org.efaps.eclipse.preferences.RestPreferencePage"
             id="org.efaps.eclipse.preferences.RestSettings"
-            name="Rest">
+            name="eFaps Settings">
       </page>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
-      <command
-            id="org.efaps.eclipse.command.connect"
-            name="%plugin.command.connect">
-         <defaultHandler
-               class="org.efaps.eclipse.handlers.ConnectHandler">
-         </defaultHandler>
-      </command>
-      <command
-            id="org.efaps.eclipse.command.reloadCache"
-            name="%plugin.command.reloadCache">
-         <defaultHandler
-               class="org.efaps.eclipse.handlers.ReloadCacheHandler">
-         </defaultHandler>
-      </command>
-      <command
-            id="org.efaps.eclipse.command.update"
-            name="%plugin.command.update">
-         <defaultHandler
-               class="org.efaps.eclipse.handlers.UpdateHandler">
-         </defaultHandler>
-      </command>
       <command
             defaultHandler="org.efaps.eclipse.handlers.CompileHandler"
             id="org.efaps.eclipse.command.compile"
@@ -494,15 +501,6 @@
       </command>
    </extension>
    <extension
-         point="org.eclipse.ui.bindings">
-      <key
-            commandId="org.efaps.eclipse.command.update"
-            contextId="org.eclipse.ui.contexts.window"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+6">
-      </key>
-   </extension>
-   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
@@ -510,28 +508,6 @@
                id="org.efaps.eclipse.menus.sampleMenu"
                label="eFaps"
                mnemonic="M">
-            <command
-                  commandId="org.efaps.eclipse.command.update"
-                  id="org.efaps.eclipse.menus.update"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.efaps.eclipse.command.reloadCache"
-                  id="org.efaps.eclipse.menus.reloadCache"
-                  style="push">
-            </command>
-            <separator
-                  name="org.efaps.eclipse.menus.separator1"
-                  visible="true">
-            </separator>
-            <command
-                  commandId="org.efaps.eclipse.command.connect"
-                  id="org.efaps.eclipse.menus.connect"
-                  style="push">
-            </command>
-            <separator
-                  name="eFaps-eclipse-plugin.separator2">
-            </separator>
             <command
                   commandId="org.efaps.eclipse.command.compile"
                   id="org.efaps.eclipse.menus.compile"

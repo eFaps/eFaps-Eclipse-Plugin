@@ -53,10 +53,11 @@ public class RestPreferencePage
                         getFieldEditorParent()));
     }
 
+    @Override
     public void init(final IWorkbench workbench)
     {
         setPreferenceStore(EfapsPlugin.getDefault().getPreferenceStore());
-        setDescription("A demonstration of a preference page implementation");
+        setDescription("The REST server URLS");
     }
 
     public class ServerListEditor

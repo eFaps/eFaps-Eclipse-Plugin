@@ -23,24 +23,22 @@ package org.efaps.eclipse.rest;
 import java.io.File;
 import java.util.List;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import org.apache.commons.codec.binary.Base64;
 import org.efaps.eclipse.EfapsPlugin;
 import org.efaps.eclipse.preferences.PreferenceConstants;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.glassfish.jersey.media.multipart.MultiPart;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.client.apache.ApacheHttpClient;
-import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
-import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
-import com.sun.jersey.multipart.MultiPart;
-import com.sun.jersey.multipart.MultiPartMediaTypes;
-import com.sun.jersey.multipart.file.FileDataBodyPart;
+
 
 /**
  * TODO comment!
@@ -55,15 +53,12 @@ public class RestClient
      * Client that makes the actual connection.
      */
     private Client client;
-    /**
-     * Resource to be used in the request.
-     */
-    private WebResource resource;
 
     /**
      * Url to be used in the request by this client.
      */
     private final String url;
+    private WebTarget webTarget;
 
     /**
      * @param _url url for this client.
@@ -83,14 +78,22 @@ public class RestClient
                         .getString(PreferenceConstants.REST_PWD.getPrefName());
         final String user = EfapsPlugin.getDefault().getPreferenceStore()
                         .getString(PreferenceConstants.REST_USER.getPrefName());
+        final ClientConfig clientConfig = new ClientConfig();
 
-        final DefaultApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
-        config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
-        this.client = ApacheHttpClient.create(config);
-        this.resource = this.client.resource(this.url);
-        final Builder builder = this.resource.path("update").header(HttpHeaders.AUTHORIZATION, new String(Base64
-                        .encodeBase64((user + ":" + pwd).getBytes())));
-        final String re = builder.get(String.class);
+        final HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(user, pwd);
+        clientConfig.register(feature).register(MultiPartFeature.class);
+
+        this.client = ClientBuilder.newClient(clientConfig);
+
+        this.webTarget = this.client.target(this.url);
+        final WebTarget resourceWebTarget = this.webTarget.path("update");
+
+
+
+//        final Builder builder = this.resource.path("update").header(HttpHeaders.AUTHORIZATION, new String(Base64
+//                        .encodeBase64((user + ":" + pwd).getBytes())));
+
+        final String re ="";
         EfapsPlugin.getDefault().logInfo(getClass(), "init.response", re);
     }
 
@@ -102,10 +105,12 @@ public class RestClient
     public void compile(final String _target)
     {
         EfapsPlugin.getDefault().logInfo(getClass(), "compile", _target);
-        final MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-        queryParams.add("type", _target);
-        final ClientResponse response = this.resource.path("compile").queryParams(queryParams)
-                        .get(ClientResponse.class);
+
+        final WebTarget resourceWebTarget = this.webTarget.path("compile");
+
+        final String response = resourceWebTarget.queryParam("type", "type").request(MediaType.TEXT_PLAIN_TYPE)
+                        .get(String.class);
+
         EfapsPlugin.getDefault().logInfo(getClass(), "compile.response", response);
     }
 
@@ -123,9 +128,8 @@ public class RestClient
             final FileDataBodyPart part = new FileDataBodyPart("eFaps", file);
             multiPart.bodyPart(part);
         }
-        final ClientResponse response = this.resource.path("update").type(MultiPartMediaTypes.MULTIPART_MIXED_TYPE)
-                        .post(ClientResponse.class,
-                                        multiPart);
+         final Response response = this.webTarget.path("update").request()
+                        .post(Entity.entity(multiPart, multiPart.getMediaType()));
         EfapsPlugin.getDefault().logInfo(getClass(), "post.response", response);
     }
 }

@@ -34,7 +34,7 @@
     <groupId>org.efaps.eclipse</groupId>
     <artifactId>efaps-eclipse-plugin</artifactId>
     <name>EFaps Eclipse Plugin</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
     <!-- packaging>binary-plugin</packaging -->
 
     <build>
@@ -44,8 +44,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                     <!--compileSourceRoots>${project.compileSourceRoots}</compileSourceRoots -->
                 </configuration>
             </plugin>
@@ -85,71 +85,38 @@
                     </filesets>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <pde>true</pde>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
     <dependencies>
-        <!-- eFaps kernel -->
-
         <!-- For Logging Purpose http://www.slf4j.org -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.5.0</version>
-        </dependency>
-        <!-- commons logging over slf4j -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl104-over-slf4j</artifactId>
-            <version>1.5.0</version>
+            <version>1.7.6</version>
         </dependency>
         <!-- log4j over slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
-            <version>1.5.0</version>
+            <version>1.7.6</version>
         </dependency>
-
-
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>1.14</version>
-        </dependency>
+       
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
             <version>2.1.12</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.sun.jersey.contribs</groupId>
-            <artifactId>jersey-apache-client</artifactId>
-            <version>1.14</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-httpclient</artifactId>
-                    <groupId>commons-httpclient</groupId>
-                </exclusion>
-            </exclusions>
+         <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>2.7</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.jersey.contribs</groupId>
-            <artifactId>jersey-multipart</artifactId>
-            <version>1.14</version>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.7</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
