@@ -34,7 +34,7 @@ import org.efaps.eclipse.EfapsPlugin;
 import org.efaps.eclipse.preferences.PreferenceConstants;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.glassfish.jersey.media.multipart.MultiPart;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 
@@ -84,17 +84,7 @@ public class RestClient
         clientConfig.register(feature).register(MultiPartFeature.class);
 
         this.client = ClientBuilder.newClient(clientConfig);
-
         this.webTarget = this.client.target(this.url);
-        final WebTarget resourceWebTarget = this.webTarget.path("update");
-
-
-
-//        final Builder builder = this.resource.path("update").header(HttpHeaders.AUTHORIZATION, new String(Base64
-//                        .encodeBase64((user + ":" + pwd).getBytes())));
-
-        final String re ="";
-        EfapsPlugin.getDefault().logInfo(getClass(), "init.response", re);
     }
 
     /**
@@ -123,7 +113,8 @@ public class RestClient
     {
         EfapsPlugin.getDefault().logInfo(getClass(), "post", _files);
 
-        final MultiPart multiPart = new MultiPart();
+        final FormDataMultiPart multiPart = new FormDataMultiPart();
+        multiPart.field("foo", "bar");
         for (final File file : _files) {
             final FileDataBodyPart part = new FileDataBodyPart("eFaps", file);
             multiPart.bodyPart(part);

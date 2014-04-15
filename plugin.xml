@@ -100,7 +100,7 @@
             base-type="org.eclipse.core.runtime.xml"
             file-extensions="xml"
             id="org.efaps.eclipse.contenttypes.common.systemconfiguration"
-            name="eFaps Common Systemconfiguration Content"
+            name="eFaps Common SystemConfiguration Content"
             priority="high">
          <describer
                class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
@@ -286,7 +286,7 @@
             id="org.efaps.eclipse.decorators.common.systemconfiguration"
             label="eFaps Common SystemConfiguration Decorator"
             lightweight="true"
-            location="TOP_LEFT"
+            location="BOTTOM_LEFT"
             state="true">
          <enablement>
             <and>
@@ -300,6 +300,7 @@
             </and>
          </enablement>
       </decorator>
+      
       <decorator
             adaptable="true"
             icon="icons/datamodel/Admin_DataModel_TypeImage.gif"

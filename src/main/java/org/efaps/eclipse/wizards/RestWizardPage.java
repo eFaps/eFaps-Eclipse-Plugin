@@ -21,8 +21,8 @@ package org.efaps.eclipse.wizards;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -60,11 +60,7 @@ public class RestWizardPage
         super(_pageName);
     }
 
-
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-     */
+    @Override
     public void createControl(final Composite _parent)
     {
         this.container = new Composite(_parent, SWT.NULL);
@@ -87,48 +83,46 @@ public class RestWizardPage
         this.comboUrl.select(0);
 
         final String pwd = EfapsPlugin.getDefault().getPreferenceStore()
-                                .getString(PreferenceConstants.REST_PWD.getPrefName());
+                        .getString(PreferenceConstants.REST_PWD.getPrefName());
         final String user = EfapsPlugin.getDefault().getPreferenceStore()
-                                .getString(PreferenceConstants.REST_USER.getPrefName());
+                        .getString(PreferenceConstants.REST_USER.getPrefName());
 
         final Label label3 = new Label(this.container, SWT.NULL);
         label3.setText("User");
 
         this.user = new Text(this.container, SWT.BORDER | SWT.SINGLE);
         this.user.setText(user);
-        this.user.addFocusListener(new FocusListener(){
+        this.user.addModifyListener(new ModifyListener()
+        {
 
-            public void focusGained(final FocusEvent e)
+            @Override
+            public void modifyText(final ModifyEvent e)
             {
-               //nothing done
+                EfapsPlugin.getDefault()
+                                .getPreferenceStore()
+                                .setValue(PreferenceConstants.REST_USER.getPrefName(),
+                                                RestWizardPage.this.user.getText());
             }
-
-            public void focusLost(final FocusEvent e)
-            {
-                EfapsPlugin.getDefault().getPreferenceStore()
-                .setValue(PreferenceConstants.REST_USER.getPrefName(), RestWizardPage.this.user.getText());
-
-            }});
-
+        });
 
         final Label label2 = new Label(this.container, SWT.NULL);
         label2.setText("Password");
 
         this.passwd = new Text(this.container, SWT.BORDER | SWT.SINGLE);
         this.passwd.setText(pwd);
-        this.passwd.addFocusListener(new FocusListener(){
+        this.passwd.addModifyListener(new ModifyListener()
+        {
 
-            public void focusGained(final FocusEvent e)
+            @Override
+            public void modifyText(final ModifyEvent e)
             {
-               //nothing done
+                EfapsPlugin.getDefault()
+                                .getPreferenceStore()
+                                .setValue(PreferenceConstants.REST_PWD.getPrefName(),
+                                                RestWizardPage.this.passwd.getText());
             }
 
-            public void focusLost(final FocusEvent e)
-            {
-                EfapsPlugin.getDefault().getPreferenceStore()
-                .setValue(PreferenceConstants.REST_PWD.getPrefName(), RestWizardPage.this.passwd.getText());
-
-            }});
+        });
         final GridData gd = new GridData(GridData.FILL_HORIZONTAL);
         this.passwd.setLayoutData(gd);
         this.user.setLayoutData(gd);
