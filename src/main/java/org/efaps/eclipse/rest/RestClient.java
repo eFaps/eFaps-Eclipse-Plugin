@@ -98,10 +98,12 @@ public class RestClient
 
         final WebTarget resourceWebTarget = this.webTarget.path("compile");
 
-        final String response = resourceWebTarget.queryParam("type", "type").request(MediaType.TEXT_PLAIN_TYPE)
-                        .get(String.class);
+        final Response response = resourceWebTarget.queryParam("type", _target).request(MediaType.TEXT_PLAIN_TYPE)
+                        .get();
 
-        EfapsPlugin.getDefault().logInfo(getClass(), "compile.response", response);
+        EfapsPlugin.getDefault().logInfo(getClass(), "compile.response", response.getStatusInfo().getFamily(),
+                        response.getStatusInfo().getStatusCode(),
+                        response.getStatusInfo().getReasonPhrase());
     }
 
     /**
@@ -118,8 +120,10 @@ public class RestClient
             final FileDataBodyPart part = new FileDataBodyPart("eFaps", file);
             multiPart.bodyPart(part);
         }
-         final Response response = this.webTarget.path("update").request()
+        final Response response = this.webTarget.path("update").request()
                         .post(Entity.entity(multiPart, multiPart.getMediaType()));
-        EfapsPlugin.getDefault().logInfo(getClass(), "post.response", response);
+        EfapsPlugin.getDefault().logInfo(getClass(), "post.response", response.getStatusInfo().getFamily(),
+                        response.getStatusInfo().getStatusCode(),
+                        response.getStatusInfo().getReasonPhrase());
     }
 }
