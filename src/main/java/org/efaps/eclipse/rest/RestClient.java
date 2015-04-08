@@ -20,8 +20,15 @@
 
 package org.efaps.eclipse.rest;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -30,13 +37,31 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.jgit.errors.RevisionSyntaxException;
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.PersonIdent;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revplot.PlotCommit;
+import org.eclipse.jgit.revplot.PlotCommitList;
+import org.eclipse.jgit.revplot.PlotLane;
+import org.eclipse.jgit.revplot.PlotWalk;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.treewalk.filter.AndTreeFilter;
+import org.eclipse.jgit.treewalk.filter.PathFilter;
+import org.eclipse.jgit.treewalk.filter.TreeFilter;
 import org.efaps.eclipse.EfapsPlugin;
 import org.efaps.eclipse.preferences.PreferenceConstants;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 
 
@@ -110,15 +135,43 @@ public class RestClient
      * @param _files files to be posted
      * @throws Exception on error
      */
-    public void post(final List<File> _files)
+    public void post(final List<File> _files, 
+                     final File _revFile)
         throws Exception
     {
         EfapsPlugin.getDefault().logInfo(getClass(), "post", _files);
 
-        final MultiPart multiPart = new MultiPart();
+        Map<String, String[]> fileInfo = new HashMap<>();
+        if (_revFile != null) {
+        	BufferedReader br = new BufferedReader(new FileReader(_revFile)); 
+        	String line;
+        	while ((line = br.readLine()) != null) {
+        		String[] arr = line.split(" ");
+        		if (arr.length > 2) {
+        			fileInfo.put(arr[0],new String[]{ arr[1], arr[2] });
+        		}
+        	}
+        	br.close();
+        }
+        
+        final FormDataMultiPart multiPart = new FormDataMultiPart();
         for (final File file : _files) {
-            final FileDataBodyPart part = new FileDataBodyPart("eFaps", file);
+            final FileDataBodyPart part = new FileDataBodyPart("eFaps_File", file);
             multiPart.bodyPart(part);
+            if (_revFile == null) {
+            	String[] info = getFileInformation(file);
+            	multiPart.field("eFaps_Revision", info[0]);
+            	multiPart.field("eFaps_Date", info[1]);
+            } else {
+            	String[] info = fileInfo.get(file.getName());
+            	if (info == null) {
+            		multiPart.field("eFaps_Revision", "");
+                	multiPart.field("eFaps_Date", "");
+            	} else {
+            		multiPart.field("eFaps_Revision", info[0]);
+                	multiPart.field("eFaps_Date", info[1]);
+            	}
+            }
         }
         final Response response = this.webTarget.path("update").request()
                         .post(Entity.entity(multiPart, multiPart.getMediaType()));
@@ -126,4 +179,63 @@ public class RestClient
                         response.getStatusInfo().getStatusCode(),
                         response.getStatusInfo().getReasonPhrase());
     }
+    
+    protected String[] getFileInformation(final File _file)
+    {
+        final String[] ret = new String[2];
+
+        try {
+            final Repository repo = new FileRepository(evalGitDir(_file));
+
+            final ObjectId lastCommitId = repo.resolve(Constants.HEAD);
+
+            final PlotCommitList<PlotLane> plotCommitList = new PlotCommitList<PlotLane>();
+            final PlotWalk revWalk = new PlotWalk(repo);
+
+            final RevCommit root = revWalk.parseCommit(lastCommitId);
+            revWalk.markStart(root);
+            revWalk.setTreeFilter(AndTreeFilter.create(
+                            PathFilter.create(_file.getPath().replaceFirst(repo.getWorkTree().getPath() + "/", "")),
+                            TreeFilter.ANY_DIFF));
+            plotCommitList.source(revWalk);
+            plotCommitList.fillTo(2);
+            final PlotCommit<PlotLane> commit = plotCommitList.get(0);
+            if (commit != null) {
+                final PersonIdent authorIdent = commit.getAuthorIdent();
+                final Date authorDate = authorIdent.getWhen();
+                final TimeZone authorTimeZone = authorIdent.getTimeZone();
+                final DateTime dateTime = new DateTime(authorDate.getTime(), DateTimeZone.forTimeZone(authorTimeZone));
+                ret[1]= dateTime.toString();
+                ret[0]=commit.getId().getName();
+            } else {
+            	ret[1]=new DateTime().toString();
+            	ret[0]="UNKNOWN";
+            }
+        } catch (RevisionSyntaxException | IOException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+    
+    
+    
+    /**
+     * @param _file
+     * @return
+     */
+    protected File evalGitDir(final File _file)
+    {
+        File ret = null;
+        File parent = _file.getParentFile();;
+        while (parent != null) {
+            ret = new File(parent, ".git");
+            if (ret.exists()) {
+                break;
+            } else {
+                parent = parent.getParentFile();
+            }
+        }
+        return ret;
+    }
+    
 }

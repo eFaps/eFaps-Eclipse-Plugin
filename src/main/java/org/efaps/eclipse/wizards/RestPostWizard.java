@@ -35,86 +35,88 @@ import org.eclipse.ui.IWorkbench;
 import org.efaps.eclipse.EfapsPlugin;
 import org.efaps.eclipse.rest.RestClient;
 
-
 /**
  * TODO comment!
  *
  * @author The eFaps Team
  * @version $Id: RestClient.java 5691 2010-10-15 22:43:57Z jan.moxter $
  */
-public class RestPostWizard
-    extends Wizard
-    implements IImportWizard
-{
+public class RestPostWizard extends Wizard implements IImportWizard {
 
-    private RestWizardPage restPage;
-    private IStructuredSelection selection;
+	private RestWizardPage restPage;
+	private IStructuredSelection selection;
 
-    public RestPostWizard()
-    {
-        super();
-    }
+	public RestPostWizard() {
+		super();
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
-    @Override
-    public boolean performFinish()
-    {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
+	 */
+	@Override
+	public boolean performFinish() {
 
-        final String url = this.restPage.getComboUrl().getItem(this.restPage.getComboUrl().getSelectionIndex());
-        final List<File> files = new ArrayList<File>();
-        final Iterator<?> iter = this.selection.iterator();
-        try {
-            while (iter.hasNext()) {
-                final IAdaptable adapt = (IAdaptable) iter.next();
-                final IResource file;
-                if (adapt instanceof IJavaElement) {
-                    final IJavaElement comp = (IJavaElement) adapt.getAdapter(IJavaElement.class);
-                    file = comp.getCorrespondingResource();
-                } else {
-                    file = (IResource) adapt.getAdapter(IResource.class);
-                }
-                if (file != null && file.isAccessible()) {
-                    final URI uri = file.getLocationURI();
-                    final File t = new File(uri);
-                    files.add(t);
-                }
-            }
-            if (!files.isEmpty()) {
-                final RestClient client = new RestClient(url);
-                client.init();
-                client.post(files);
-            }
-        } catch (final Exception e) {
-            EfapsPlugin.getDefault().logError(getClass(), "Exception", e);
-        }
-        return true;
-    }
+		final String url = this.restPage.getComboUrl().getItem(
+				this.restPage.getComboUrl().getSelectionIndex());
+		final List<File> files = new ArrayList<File>();
+		final Iterator<?> iter = this.selection.iterator();
+		try {
+			File revFile = null;
+			while (iter.hasNext()) {
+				final IAdaptable adapt = (IAdaptable) iter.next();
+				final IResource file;
+				if (adapt instanceof IJavaElement) {
+					final IJavaElement comp = (IJavaElement) adapt
+							.getAdapter(IJavaElement.class);
+					file = comp.getCorrespondingResource();
+				} else {
+					file = (IResource) adapt.getAdapter(IResource.class);
+				}
+				if (file != null && file.isAccessible()) {
+					final URI uri = file.getLocationURI();
+					final File tmpFile = new File(uri);
+					if (tmpFile.getName().equals("_revFile.txt")) {
+						revFile = tmpFile;
+					} else {
+						files.add(tmpFile);
+					}
+				}
+			}
+			if (!files.isEmpty()) {
+				final RestClient client = new RestClient(url);
+				client.init();
+				client.post(files, revFile);
+			}
+		} catch (final Exception e) {
+			EfapsPlugin.getDefault().logError(getClass(), "Exception", e);
+		}
+		return true;
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-     * org.eclipse.jface.viewers.IStructuredSelection)
-     */
-    public void init(final IWorkbench _workbench,
-                     final IStructuredSelection _selection)
-    {
-        setWindowTitle("Rest Post Wizard");
-        setNeedsProgressMonitor(true);
-        this.restPage = new RestWizardPage("Import File");
-        this.selection = _selection;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
+	 * org.eclipse.jface.viewers.IStructuredSelection)
+	 */
+	public void init(final IWorkbench _workbench,
+			final IStructuredSelection _selection) {
+		setWindowTitle("Rest Post Wizard");
+		setNeedsProgressMonitor(true);
+		this.restPage = new RestWizardPage("Import File");
+		this.selection = _selection;
+	}
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.jface.wizard.IWizard#addPages()
-     */
-    @Override
-    public void addPages()
-    {
-        super.addPages();
-        addPage(this.restPage);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.wizard.IWizard#addPages()
+	 */
+	@Override
+	public void addPages() {
+		super.addPages();
+		addPage(this.restPage);
+	}
 }
