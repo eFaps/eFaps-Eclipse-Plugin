@@ -55,15 +55,11 @@ import org.efaps.eclipse.EfapsPlugin;
 import org.efaps.eclipse.preferences.PreferenceConstants;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-
-
 
 /**
  * TODO comment!
@@ -135,42 +131,42 @@ public class RestClient
      * @param _files files to be posted
      * @throws Exception on error
      */
-    public void post(final List<File> _files, 
+    public void post(final List<File> _files,
                      final File _revFile)
         throws Exception
     {
         EfapsPlugin.getDefault().logInfo(getClass(), "post", _files);
 
-        Map<String, String[]> fileInfo = new HashMap<>();
+        final Map<String, String[]> fileInfo = new HashMap<>();
         if (_revFile != null) {
-        	BufferedReader br = new BufferedReader(new FileReader(_revFile)); 
-        	String line;
-        	while ((line = br.readLine()) != null) {
-        		String[] arr = line.split(" ");
-        		if (arr.length > 2) {
-        			fileInfo.put(arr[0],new String[]{ arr[1], arr[2] });
-        		}
-        	}
-        	br.close();
+            final BufferedReader br = new BufferedReader(new FileReader(_revFile));
+            String line;
+            while ((line = br.readLine()) != null) {
+                final String[] arr = line.split(" ");
+                if (arr.length > 2) {
+                    fileInfo.put(arr[0], new String[] { arr[1], arr[2] });
+                }
+            }
+            br.close();
         }
-        
+
         final FormDataMultiPart multiPart = new FormDataMultiPart();
         for (final File file : _files) {
             final FileDataBodyPart part = new FileDataBodyPart("eFaps_File", file);
             multiPart.bodyPart(part);
             if (_revFile == null) {
-            	String[] info = getFileInformation(file);
-            	multiPart.field("eFaps_Revision", info[0]);
-            	multiPart.field("eFaps_Date", info[1]);
+                final String[] info = getFileInformation(file);
+                multiPart.field("eFaps_Revision", info[0]);
+                multiPart.field("eFaps_Date", info[1]);
             } else {
-            	String[] info = fileInfo.get(file.getName());
-            	if (info == null) {
-            		multiPart.field("eFaps_Revision", "");
-                	multiPart.field("eFaps_Date", "");
-            	} else {
-            		multiPart.field("eFaps_Revision", info[0]);
-                	multiPart.field("eFaps_Date", info[1]);
-            	}
+                final String[] info = fileInfo.get(file.getName());
+                if (info == null) {
+                    multiPart.field("eFaps_Revision", "");
+                    multiPart.field("eFaps_Date", "");
+                } else {
+                    multiPart.field("eFaps_Revision", info[0]);
+                    multiPart.field("eFaps_Date", info[1]);
+                }
             }
         }
         final Response response = this.webTarget.path("update").request()
@@ -179,7 +175,7 @@ public class RestClient
                         response.getStatusInfo().getStatusCode(),
                         response.getStatusInfo().getReasonPhrase());
     }
-    
+
     protected String[] getFileInformation(final File _file)
     {
         final String[] ret = new String[2];
@@ -205,20 +201,18 @@ public class RestClient
                 final Date authorDate = authorIdent.getWhen();
                 final TimeZone authorTimeZone = authorIdent.getTimeZone();
                 final DateTime dateTime = new DateTime(authorDate.getTime(), DateTimeZone.forTimeZone(authorTimeZone));
-                ret[1]= dateTime.toString();
-                ret[0]=commit.getId().getName();
+                ret[1] = dateTime.toString();
+                ret[0] = commit.getId().getName();
             } else {
-            	ret[1]=new DateTime().toString();
-            	ret[0]="UNKNOWN";
+                ret[1] = new DateTime().toString();
+                ret[0] = "UNKNOWN";
             }
         } catch (RevisionSyntaxException | IOException e) {
             e.printStackTrace();
         }
         return ret;
     }
-    
-    
-    
+
     /**
      * @param _file
      * @return
@@ -226,7 +220,8 @@ public class RestClient
     protected File evalGitDir(final File _file)
     {
         File ret = null;
-        File parent = _file.getParentFile();;
+        File parent = _file.getParentFile();
+        ;
         while (parent != null) {
             ret = new File(parent, ".git");
             if (ret.exists()) {
@@ -237,5 +232,4 @@ public class RestClient
         }
         return ret;
     }
-    
 }
