@@ -197,12 +197,26 @@
          <parameter name="element" value="ui-table"/>
        </describer>
       </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            id="org.efaps.eclipse.contenttypes.user.company"
+            name="eFaps User Company Content"
+            priority="high">
+         <describer
+               class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="user-company">
+            </parameter>
+         </describer>
+      </content-type>
    </extension>
    <extension
          point="org.eclipse.ui.decorators">
       <decorator
             adaptable="true"
-            icon="icons/user/Admin_User_GroupImage.gif"
+            icon="icons/Admin_User_GroupImage.gif"
             id="org.efaps.eclipse.decorators.user.group"
             label="eFaps User Group Decorator"
             lightweight="true"
@@ -222,7 +236,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/user/Admin_User_JAASSystemImage.gif"
+            icon="icons/Admin_User_JAASSystemImage.gif"
             id="org.efaps.eclipse.decorators.user.jaassystem"
             label="eFaps User JAAS System Decorator"
             lightweight="true"
@@ -242,7 +256,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/user/Admin_User_RoleImage.gif"
+            icon="icons/Admin_User_RoleImage.gif"
             id="org.efaps.eclipse.decorators.user.role"
             label="eFaps User Role Decorator"
             lightweight="true"
@@ -262,7 +276,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/common_dbproperties/Admin_Common_DBPropertiesBundleImage.gif"
+            icon="icons/Admin_Common_DBPropertiesBundleImage.gif"
             id="org.efaps.eclipse.decorators.common.dbproperties"
             label="eFaps Common DB Properties Decorator"
             lightweight="true"
@@ -282,7 +296,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/common_systemconfiguration/Admin_Common_SystemConfigurationImage.gif"
+            icon="icons/Admin_Common_SystemConfigurationImage.gif"
             id="org.efaps.eclipse.decorators.common.systemconfiguration"
             label="eFaps Common SystemConfiguration Decorator"
             lightweight="true"
@@ -303,7 +317,7 @@
       
       <decorator
             adaptable="true"
-            icon="icons/datamodel/Admin_DataModel_TypeImage.gif"
+            icon="icons/Admin_DataModel_TypeImage.gif"
             id="org.efaps.eclipse.decorators.datamodel.type"
             label="eFaps Data Model Type Decorator"
             lightweight="true"
@@ -323,7 +337,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/datamodel/Admin_DataModel_SQLTableImage.gif"
+            icon="icons/Admin_DataModel_SQLTableImage.gif"
             id="org.efaps.eclipse.decorators.datamodel.sqltable"
             label="eFaps Data Model SQL Table Decorator"
             lightweight="true"
@@ -343,7 +357,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/datamodel/Admin_DataModel_DimensionImage.gif"
+            icon="icons/Admin_DataModel_DimensionImage.gif"
             id="org.efaps.eclipse.decorators.datamodel.dimension"
             label="eFaps Data Model Dimension Decorator"
             lightweight="true"
@@ -363,7 +377,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/userinterface/Admin_UI_CommandImage.gif"
+            icon="icons/Admin_UI_CommandImage.gif"
             id="org.efaps.eclipse.decorators.command"
             label="eFaps User Interface Command Decorator"
             lightweight="true"
@@ -383,7 +397,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/userinterface/Admin_UI_FormImage.gif"
+            icon="icons/Admin_UI_FormImage.gif"
             id="org.efaps.eclipse.decorators.form"
             label="eFaps User Interface Form Decorator"
             lightweight="true"
@@ -403,7 +417,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/userinterface/Admin_UI_ImageImage.gif"
+            icon="icons/Admin_UI_ImageImage.gif"
             id="org.efaps.eclipse.decorators.image"
             label="eFaps User Interface Image Decorator"
             lightweight="true"
@@ -423,7 +437,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/userinterface/Admin_UI_MenuImage.gif"
+            icon="icons/Admin_UI_MenuImage.gif"
             id="org.efaps.eclipse.decorators.menu"
             label="eFaps User Interface Menu Decorator"
             lightweight="true"
@@ -443,7 +457,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/userinterface/Admin_UI_SearchImage.gif"
+            icon="icons/Admin_UI_SearchImage.gif"
             id="org.efaps.eclipse.decorators.search"
             label="eFaps User Interface Search Decorator"
             lightweight="true"
@@ -463,7 +477,7 @@
       </decorator>
       <decorator
             adaptable="true"
-            icon="icons/userinterface/Admin_UI_TableImage.gif"
+            icon="icons/Admin_UI_TableImage.gif"
             id="org.efaps.eclipse.decorators.table"
             label="eFaps User Interface Table Decorator"
             lightweight="true"
@@ -477,6 +491,26 @@
                <objectState
                      name="contentTypeId"
                      value="org.efaps.eclipse.contenttypes.table">
+               </objectState>
+            </and>
+         </enablement>
+      </decorator>
+      <decorator
+            adaptable="true"
+            icon="icons/Admin_User_CompanyImage.gif"
+            id="org.efaps.eclipse.decorators.user.company"
+            label="eFaps User Company Decorator"
+            lightweight="true"
+            location="TOP_LEFT"
+            state="true">
+         <enablement>
+            <and>
+               <objectClass
+                     name="org.eclipse.core.resources.IFile">
+               </objectClass>
+               <objectState
+                     name="contentTypeId"
+                     value="org.efaps.eclipse.contenttypes.user.company">
                </objectState>
             </and>
          </enablement>
