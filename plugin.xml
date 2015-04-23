@@ -113,6 +113,20 @@
       <content-type
             base-type="org.eclipse.core.runtime.xml"
             file-extensions="xml"
+            id="org.efaps.eclipse.contenttypes.datamodel.dimension"
+            name="eFaps Data Model Dimension Content"
+            priority="high">
+         <describer
+               class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="datamodel-dimension">
+            </parameter>
+         </describer>
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
             id="org.efaps.eclipse.contenttypes.datamodel.type"
             name="eFaps Data Model Type Content"
             priority="high">
@@ -128,20 +142,6 @@
        <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
          <parameter name="element" value="datamodel-sqltable"/>
        </describer>
-      </content-type>
-      <content-type
-            base-type="org.eclipse.core.runtime.xml"
-            file-extensions="xml"
-            id="org.efaps.eclipse.contenttypes.datamodel.dimension"
-            name="eFaps Data Model Dimension Content"
-            priority="high">
-         <describer
-               class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
-            <parameter
-                  name="element"
-                  value="datamodel-dimension">
-            </parameter>
-         </describer>
       </content-type>
       <content-type
             base-type="org.eclipse.core.runtime.xml"
@@ -208,6 +208,20 @@
             <parameter
                   name="element"
                   value="user-company">
+            </parameter>
+         </describer>
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            id="org.efaps.eclipse.contenttypes.datamodel.status"
+            name="eFaps Data Model Status Content"
+            priority="high">
+         <describer
+               class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="datamodel-statusgroup">
             </parameter>
          </describer>
       </content-type>
@@ -314,6 +328,26 @@
             </and>
          </enablement>
       </decorator>
+      <decorator
+            adaptable="true"
+            icon="icons/Admin_DataModel_DimensionImage.gif"
+            id="org.efaps.eclipse.decorators.datamodel.dimension"
+            label="eFaps Data Model Dimension Decorator"
+            lightweight="true"
+            location="TOP_LEFT"
+            state="true">
+         <enablement>
+            <and>
+               <objectClass
+                     name="org.eclipse.core.resources.IFile">
+               </objectClass>
+               <objectState
+                     name="contentTypeId"
+                     value="org.efaps.eclipse.contenttypes.datamodel.dimension">
+               </objectState>
+            </and>
+         </enablement>
+      </decorator>
       
       <decorator
             adaptable="true"
@@ -337,6 +371,26 @@
       </decorator>
       <decorator
             adaptable="true"
+            icon="icons/Admin_DataModel_StatusImage.png"
+            id="org.efaps.eclipse.decorators.datamodel.status"
+            label="eFaps Data Model Status Decorator"
+            lightweight="true"
+            location="TOP_LEFT"
+            state="true">
+         <enablement>
+            <and>
+               <objectClass
+                     name="org.eclipse.core.resources.IFile">
+               </objectClass>
+               <objectState
+                     name="contentTypeId"
+                     value="org.efaps.eclipse.contenttypes.datamodel.status">
+               </objectState>
+            </and>
+         </enablement>
+      </decorator>
+      <decorator
+            adaptable="true"
             icon="icons/Admin_DataModel_SQLTableImage.gif"
             id="org.efaps.eclipse.decorators.datamodel.sqltable"
             label="eFaps Data Model SQL Table Decorator"
@@ -351,26 +405,6 @@
                <objectState
                      name="contentTypeId"
                      value="org.efaps.eclipse.contenttypes.datamodel.sqltable">
-               </objectState>
-            </and>
-         </enablement>
-      </decorator>
-      <decorator
-            adaptable="true"
-            icon="icons/Admin_DataModel_DimensionImage.gif"
-            id="org.efaps.eclipse.decorators.datamodel.dimension"
-            label="eFaps Data Model Dimension Decorator"
-            lightweight="true"
-            location="TOP_LEFT"
-            state="true">
-         <enablement>
-            <and>
-               <objectClass
-                     name="org.eclipse.core.resources.IFile">
-               </objectClass>
-               <objectState
-                     name="contentTypeId"
-                     value="org.efaps.eclipse.contenttypes.datamodel.dimension">
                </objectState>
             </and>
          </enablement>
