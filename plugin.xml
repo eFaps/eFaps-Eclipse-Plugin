@@ -590,7 +590,7 @@
                id="org.efaps.eclipse.toolbars.sampleToolbar">
             <command
                   commandId="org.efaps.eclipse.command.update"
-                  icon="icons/datamodel/Admin_DataModel_Type+Edit+Image.gif"
+                  icon="icons/Admin_DataModel_Type+Edit+Image.gif"
                   id="org.efaps.eclipse.toolbars.updateCommand"
                   label="%plugin.toolbar.updateCommand.Label"
                   tooltip="Say hello world">
